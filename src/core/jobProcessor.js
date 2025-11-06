@@ -1,3 +1,4 @@
+// src/core/jobProcessor.js
 import { exec } from "child_process";
 import { promisify } from "util";
 import { calculateBackoff } from "../utils/backoff.js";
@@ -12,14 +13,15 @@ const execAsync = promisify(exec);
 export const JobProcessor = {
   async process(job, workerId) {
     logger.info(`👷 Worker ${workerId} processing job ${job.id}`);
+    const updatedJob = await QueueManager.incrementAttempts(job.id);
 
     try {
-      await execAsync(job.command);
-      await QueueManager.updateJobState(job.id, "completed");
-      logger.info(`✅ Job ${job.id} completed successfully`);
+      await execAsync(updatedJob.command);
+      await QueueManager.updateJobState(updatedJob.id, "completed");
+      logger.info(`✅ Job ${updatedJob.id} completed successfully (attempt ${updatedJob.attempts})`);
     } catch (error) {
-      logger.error(`❌ Job ${job.id} failed: ${error.message}`);
-      await this.handleFailure(job);
+      logger.error(`❌ Job ${updatedJob.id} failed: ${error.message}`);
+      await this.handleFailure(updatedJob);
     }
   },
 
@@ -29,12 +31,11 @@ export const JobProcessor = {
     const base = configMap.backoff_base || 2;
     const maxRetries = configMap.max_retries || job.max_retries || 3;
 
-    const updatedJob = await QueueManager.incrementAttempts(job.id);
-    const { attempts } = updatedJob;
+    const { attempts } = job;
 
     if (attempts >= maxRetries) {
       await QueueManager.updateJobState(job.id, "dead");
-      await DLQManager.moveToDLQ(updatedJob, "Max retries reached");
+      await DLQManager.moveToDLQ(job, "Max retries reached");
       return;
     }
 
