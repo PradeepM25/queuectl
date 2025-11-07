@@ -8,7 +8,7 @@ QueueCTL manages background jobs, executes them using worker processes, automati
 ## 🚀 1. Setup Instructions
 
 ### **Prerequisites**
-- Node.js v18 or higher  
+- Node.js 
 - MongoDB (local or cloud instance)
 
 ### **Installation**
