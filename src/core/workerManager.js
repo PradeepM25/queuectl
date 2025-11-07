@@ -19,7 +19,6 @@ export const WorkerManager = {
       logger.info("🛑 Graceful shutdown initiated...");
       this.running = false;
       await Promise.all(this.workers);
-      process.exit(0);
     });
   },
 
