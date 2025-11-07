@@ -1,4 +1,3 @@
-// src/core/jobProcessor.js
 import { exec } from "child_process";
 import { promisify } from "util";
 import { calculateBackoff } from "../utils/backoff.js";

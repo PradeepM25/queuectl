@@ -1,11 +1,6 @@
 import { Job } from "../db/jobModel.js";
 import { logger } from "../utils/logger.js";
 
-/**
- * Provides distributed locking using MongoDB atomic operations.
- * Ensures one worker claims a job at a time.
- */
-
 export const LockManager = {
   async acquireLock(jobId) {
     try {

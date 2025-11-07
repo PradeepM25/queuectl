@@ -22,7 +22,6 @@ program.addCommand(listCommand);
 program.addCommand(dlqCommand);
 program.addCommand(configCommand);
 
-// Connect to DB before running any command
 program.hook("preAction", async () => {
   await connectDB();
 });
