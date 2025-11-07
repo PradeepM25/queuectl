@@ -18,7 +18,7 @@ export const listCommand = new Command("list")
       console.log(`\n🧾 Jobs (${options.state.toUpperCase()}):`);
       jobs.forEach((job) => {
         jobs.forEach((job) => {
-            console.log(`${printJobSummary(job)} \n`)
+          printJobSummary(job)
         });
       });
     } catch (err) {

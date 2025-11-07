@@ -1,6 +1,5 @@
 import readline from "readline";
-import { connectDB } from "./db/connection.js";
-import { logger } from "./utils/logger.js";
+import { connectDB, closeDB } from "./db/connection.js";
 import { enqueueCommand } from "./cli/commands/enqueue.js";
 import { workerCommand } from "./cli/commands/worker.js";
 import { statusCommand } from "./cli/commands/status.js";
@@ -27,6 +26,7 @@ import { configCommand } from "./cli/commands/config.js";
     }
 
     if (input === "exit" || input === "quit") {
+      closeDB();
       console.log("👋Bye Bye\n");
       process.exit(0);
     }

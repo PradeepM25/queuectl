@@ -20,7 +20,7 @@ dlqCommand
 
       console.log("\n☠️  Dead Letter Queue:");
       jobs.forEach((job) => {
-        console.log(`${printJobSummary(job)} \n`)
+        printJobSummary(job)
       });
     } catch (err) {
       logger.error(`Error listing DLQ jobs: ${err.message}`);
