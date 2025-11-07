@@ -13,7 +13,7 @@ QueueCTL manages background jobs, executes them using worker processes, automati
 
 ### **Installation**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/PradeepM25/queuectl.git
 cd queuectl
 npm install
 ```
@@ -103,6 +103,33 @@ queuectl> config get
 | **JobProcessor** | Executes job commands, handles retries, and applies backoff logic. |
 | **DLQManager** | Manages jobs that fail permanently after max retries. |
 | **ConfigManager** | Stores runtime configuration (retry count, backoff base, etc.). |
+
+## 🧩 3. Available Commands
+
+| Command | Options / Usage | Description |
+|----------|-----------------|--------------|
+| **enqueue** | `-c "<command>"` | Enqueue a new job to the background queue. <br>Example: `queuectl enqueue -c "echo Hello World"` |
+| **worker** | `-c <number>` | Start one or more workers to process jobs concurrently. <br>Example: `queuectl worker -c 2` |
+| **worker --stop** | *(no args)* | Stop all running background workers gracefully. |
+| **status** | *(no args)* | Show overall queue status — pending, completed, failed, and dead jobs. |
+| **list** | `--state <state>` *(optional)* | List all jobs in the queue. Optionally filter by state (`pending`, `completed`, etc.). |
+| **dlq list** | *(no args)* | List all jobs currently in the Dead Letter Queue (DLQ). |
+| **dlq retry** | `<jobId>` | Retry a job from the DLQ. <br>Example: `queuectl dlq retry job-1762534456782-7865` |
+| **config set** | `<key> <value>` | Update runtime configuration (e.g., `max-retries`, `backoff_base`). <br>Example: `queuectl config set max-retries 5` |
+| **config get** | *(no args)* | Display all stored configuration settings. |
+
+---
+
+### 🧠 Command Summary
+
+- 🧱 **enqueue** → Add background jobs to the queue.  
+- ⚙️ **worker** → Run multiple concurrent workers.  
+- 🛑 **worker --stop** → Gracefully stop all workers.  
+- 📊 **status** → Get system-wide queue metrics.  
+- 📜 **list** → View job details by status.  
+- ☠️ **dlq list** → Inspect permanently failed jobs.  
+- 🔁 **dlq retry** → Requeue jobs from the DLQ.  
+- ⚙️ **config set / get** → Manage queue settings dynamically.  
 
 ---
 
